@@ -1,6 +1,4 @@
 class Api::V1::BucketlistsController < ApplicationController
-  # before_action :bucketlist_params, only: [:create, :update]
-  # before_action :item_params, only: []
   before_action :authenticate, except:[:index]
 
   def index

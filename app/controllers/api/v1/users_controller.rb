@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_action: user_params only: [:create]
+  before_action :user_params only: [:create]
 
   def create
     @user = User.create(user_params)
