@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  get '/', :to => redirect("welcome")
   namespace :api, {:default => :json} do
     namespace :v1 do
       post 'auth/login', to: 'auth#login'
