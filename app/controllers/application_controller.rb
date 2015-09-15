@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionController::Helpers
   before_filter :add_allow_credentials_headers
+  serialization_scope :current_user
   helper_method :current_user
 
 
