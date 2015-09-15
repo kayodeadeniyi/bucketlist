@@ -5,8 +5,6 @@ class ApplicationController < ActionController::API
   serialization_scope :current_user
   helper_method :current_user
 
-
-
   def current_user
     @current_user
   end
@@ -48,12 +46,13 @@ class ApplicationController < ActionController::API
       authenticate_with_http_token do |token, options|
         @current_user = User.find_by(auth_token: token)
       end
-
-      if @current_user.login == false
-        self.headers['WWW-Authenticate'] = 'Token realm="Application"'
-        render json: 'Invalid token', status: 401
-      else
-        true
+      if !@current_user.nil?
+        if @current_user.login == false
+          self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+          render json: 'Invalid token', status: 401
+        else
+          true
+        end
       end
     end
 

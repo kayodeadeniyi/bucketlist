@@ -5,7 +5,7 @@ class Api::V1::BucketlistsController < ApplicationController
 
   def index
     @bucketlists = Bucketlist.all
-    render json: @bucketlists
+    render json: @bucketlists, each_serializer: BucketlistsimpleSerializer
   end
 
   def create
@@ -57,7 +57,7 @@ class Api::V1::BucketlistsController < ApplicationController
     end
 
     def item_params
-      params.permit(:item_name, :done, :item_id)
+      params.permit(:name, :done)
     end
 
 end
