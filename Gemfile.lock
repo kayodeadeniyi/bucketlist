@@ -20,6 +20,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_model_serializers (0.8.3)
+      activemodel (>= 3.0)
     activejob (4.2.3)
       activesupport (= 4.2.3)
       globalid (>= 0.3.0)
@@ -37,6 +39,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.3)
+    bcrypt (3.1.10)
     builder (3.2.2)
     erubis (2.7.0)
     globalid (0.3.6)
@@ -83,6 +86,8 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
+    rename (1.0.2)
+      rails (>= 3.0.0)
     spring (1.4.0)
     sprockets (3.3.4)
       rack (~> 1.0)
@@ -100,7 +105,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers (~> 0.8.0)
+  bcrypt (~> 3.1.7)
   rails (= 4.2.3)
   rails-api
+  rename
   spring
   sqlite3

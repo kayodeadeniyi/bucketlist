@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+
+  namespace :api, {:default => :json} do
+    namespace :v1 do
+      post 'auth/login', to: 'auth#login'
+      get 'auth/logout', to: 'auth#logout'
+
+      post 'bucketlists/:id', to: 'bucketlists#add_item'
+      resources :bucketlists, only: [:index, :create, :destroy, :update, :show]
+      resources :users, only: [:create, :destroy, :update, :show]
+    end
+  end
+  get '*unmatched_route', to: 'application#no_route_found'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

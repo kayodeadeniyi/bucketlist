@@ -10,6 +10,12 @@ gem 'spring', :group => :development
 
 gem 'sqlite3'
 
+gem 'rename'
+
+gem 'bcrypt', '~> 3.1.7'
+
+gem "active_model_serializers", "~> 0.8.0"
+
 
 
 # To use ActiveModel has_secure_password
