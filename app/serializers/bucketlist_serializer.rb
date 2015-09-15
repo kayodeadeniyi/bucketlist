@@ -11,9 +11,11 @@ class BucketlistSerializer < ActiveModel::Serializer
     object.user.name
   end
 
-  has_many :items
+  if scope.current_user
+    has_many :items
 
-  attribute :created_at, :key => :date_created
-  attribute :updated_at, :key => :date_modified
+    attribute :created_at, :key => :date_created
+    attribute :updated_at, :key => :date_modified
+  end
 
 end

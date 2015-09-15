@@ -10,12 +10,13 @@ class Api::V1::BucketlistsController < ApplicationController
 
   def create
     @bucketlist = Bucketlist.new(bucketlist_params)
-     if @bucketlist.save
-       render json: @bucketlist
-     else
-       response = {status: 'failure', body: 'Bucketlist could not be created'}
-       render json: response.to_json
-     end
+    @bucketlist.user_id = current_user.id
+    if @bucketlist.save
+      render json: @bucketlist
+    else
+      response = {status: 'failure', body: 'Bucketlist could not be created'}
+      render json: response.to_json
+    end
   end
 
   def update
@@ -52,11 +53,11 @@ class Api::V1::BucketlistsController < ApplicationController
 
   protected
     def bucketlist_params
-      params.permit(:name, :user_id, :id)
+      params.permit(:name, :id)
     end
 
     def item_params
       params.permit(:item_name, :done, :item_id)
     end
-    
+
 end

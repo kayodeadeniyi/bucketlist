@@ -1,6 +1,14 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
+  include ActionController::Helpers
   before_filter :add_allow_credentials_headers
+  helper_method :current_user
+
+
+
+  def current_user
+    @current_user
+  end
 
   def add_allow_credentials_headers
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin'] || '*'
@@ -37,10 +45,10 @@ class ApplicationController < ActionController::API
 
     def authenticate_token
       authenticate_with_http_token do |token, options|
-        @user = User.find_by(auth_token: token)
+        @current_user = User.find_by(auth_token: token)
       end
-      
-      if @user.login == false
+
+      if @current_user.login == false
         self.headers['WWW-Authenticate'] = 'Token realm="Application"'
         render json: 'Invalid token', status: 401
       else
