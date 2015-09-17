@@ -22,7 +22,7 @@ class ApplicationController < ActionController::API
     if request.method == 'OPTIONS'
       headers['Access-Control-Allow-Origin'] = '*'
       headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, X-Prototype-Version, Token'
+      headers['Access-Control-Allow-Headers'] = 'Origin, Accept, X-Requested-With, Content-Type, X-Prototype-Version, Token'
       headers['Access-Control-Max-Age'] = '1728000'
     end
   end

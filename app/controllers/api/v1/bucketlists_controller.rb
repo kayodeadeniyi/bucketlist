@@ -51,7 +51,7 @@ class Api::V1::BucketlistsController < ApplicationController
 
   protected
     def bucketlist_params
-      params.permit(:name, :id)
+      params.permit(:name)
     end
 
     def item_params
