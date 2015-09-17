@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionController::Helpers
-  before_filter :add_allow_credentials_headers
+
+  before_filter :cors_preflight_check
+  after_filter :cors_set_access_control_headers
   serialization_scope :current_user
   helper_method :current_user
 
@@ -9,9 +11,20 @@ class ApplicationController < ActionController::API
     @current_user
   end
 
-  def add_allow_credentials_headers
-    response.headers['Access-Control-Allow-Origin'] = request.headers['Origin'] || '*'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
+  def cors_set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+    headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
+    headers['Access-Control-Max-Age'] = "1728000"
+  end
+
+  def cors_preflight_check
+    if request.method == 'OPTIONS'
+      headers['Access-Control-Allow-Origin'] = '*'
+      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+      headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, X-Prototype-Version, Token'
+      headers['Access-Control-Max-Age'] = '1728000'
+    end
   end
 
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
