@@ -1,11 +1,12 @@
 require 'test_helper'
 
 class Api::V1::UsersControllerTest < ActionController::TestCase
+
   # test "should get create" do
-  #   get :create
+  #   get :show
   #   assert_response :success
   # end
-  #
+
   # test "should get destroy" do
   #   get :destroy
   #   assert_response :success
