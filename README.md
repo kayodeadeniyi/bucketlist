@@ -1,4 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/andela-kadeniyi/bucketlist/badge.svg?branch=master&service=github)](https://coveralls.io/github/andela-kadeniyi/bucketlist?branch=master)
+
 == README
 
 
