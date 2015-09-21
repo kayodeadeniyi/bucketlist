@@ -7,14 +7,22 @@ This application centers on creating an API. This is my checkpoint 3 project for
 In this exercise you will be required to create a Rails API for a bucket list service. Specification for the API is shown below. You may use any database you prefer for this assignment.
 
 ###EndPoint                     Functionality
-+POST /auth/login            Logs a user in
-+GET /auth/logout            Logs a user out
-+POST /bucketlists/          Create a new bucket list
-+GET /bucketlists/           List all the created bucket lists
-+GET /bucketlist/<id>        Get single bucket list
-+POST /bucketlist/<id>       Add a new item to this bucket list
-+PUT /bucketlist/<id>        Update this bucket list
-+DELETE /bucketlist/<id>     Delete this single bucket list
+*POST /auth/login            Logs a user in
+
+*GET /auth/logout            Logs a user out
+
+*POST /bucketlists/          Create a new bucket list
+
+*GET /bucketlists/           List all the created bucket lists
+
+*GET /bucketlist/<id>        Get single bucket list
+
+*POST /bucketlist/<id>       Add a new item to this bucket list
+
+*PUT /bucketlist/<id>        Update this bucket list
+
+*DELETE /bucketlist/<id>     Delete this single bucket list
+
 
 ###Task 0 - Create API
 In this task you are required to create the API described above using Rails API. The JSON data model for a bucket list and a bucket list item is shown below.
