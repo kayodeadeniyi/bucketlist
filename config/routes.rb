@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
   get '/', :to => redirect("welcome")
-  namespace :api, {:default => :json} do
+  namespace :api do
     namespace :v1 do
       post 'auth/login', to: 'auth#login'
       get 'auth/logout', to: 'auth#logout'
 
       post 'bucketlists/:id', to: 'bucketlists#add_item'
-      resources :bucketlists, only: [:index, :create, :destroy, :update, :show]
-      resources :users, only: [:create, :destroy, :update, :show]
+      resources :bucketlists#, only: [:index, :create, :destroy, :update, :show]
+      resource :users#, only: [:create, :destroy, :update, :show]
     end
   end
   get '*unmatched_route', to: 'application#no_route_found'

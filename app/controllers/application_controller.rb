@@ -4,7 +4,6 @@ class ApplicationController < ActionController::API
 
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
-  serialization_scope :current_user
   helper_method :current_user
 
   def current_user
@@ -15,7 +14,6 @@ class ApplicationController < ActionController::API
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
     headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
-    headers['Access-Control-Max-Age'] = "1728000"
   end
 
   def cors_preflight_check
@@ -23,7 +21,6 @@ class ApplicationController < ActionController::API
       headers['Access-Control-Allow-Origin'] = '*'
       headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
       headers['Access-Control-Allow-Headers'] = 'Origin, Accept, X-Requested-With, Content-Type, X-Prototype-Version, Token'
-      headers['Access-Control-Max-Age'] = '1728000'
     end
   end
 
@@ -56,13 +53,14 @@ class ApplicationController < ActionController::API
     end
 
     def authenticate_token
+      # require 'pry'; binding.pry
       authenticate_with_http_token do |token, options|
         @current_user = User.find_by(auth_token: token)
       end
       if !@current_user.nil?
         if @current_user.login == false
           self.headers['WWW-Authenticate'] = 'Token realm="Application"'
-          render json: 'Invalid token', status: 401
+          render json: 'Token Expired', status: 401
         else
           true
         end
@@ -71,7 +69,7 @@ class ApplicationController < ActionController::API
 
     def render_unauthorized
       self.headers['WWW-Authenticate'] = 'Token realm="Application"'
-      render json: 'Bad credentials', status: 401
+      render json: 'Bad Credentials', status: 401
     end
 
 end

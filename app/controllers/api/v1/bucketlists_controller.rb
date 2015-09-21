@@ -3,11 +3,12 @@ class Api::V1::BucketlistsController < ApplicationController
 
   def index
     @bucketlists = Bucketlist.all
-    render json: @bucketlists, each_serializer: BucketlistsimpleSerializer
+    render json: @bucketlists, each_serializer: BucketlistsimpleSerializer#, root: false
   end
 
   def create
     @bucketlist = Bucketlist.new(bucketlist_params)
+    # require 'pry'; binding.pry
     @bucketlist.user_id = current_user.id
     if @bucketlist.save
       render json: @bucketlist
