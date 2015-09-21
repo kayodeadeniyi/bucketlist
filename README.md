@@ -86,3 +86,5 @@ For this task, you are required to implement Token Based Authentication for the 
 <strong>Note: GET /bucketlists/ should return an array of bucketlist containing name and id only.</strong>
 
 ####Task 2 - Version your API
+
+To read the documentation and interact with the API, <a href="http://abucketlist.herokuapp.com/">Click here</a>
