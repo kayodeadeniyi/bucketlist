@@ -6,7 +6,7 @@ This application centers on creating an API. This is my checkpoint 3 project for
 <h2> Problem Description </h2>
 In this exercise you will be required to create a Rails API for a bucket list service. Specification for the API is shown below. You may use any database you prefer for this assignment.
 
-####EndPoint                     Functionality
+####EndPoint     &&                Functionality
 * POST /auth/login,            Logs a user in
 
 * GET /auth/logout,            Logs a user out
@@ -64,7 +64,7 @@ In this task you are required to create the API described above using Rails API.
 For this task, you are required to implement Token Based Authentication for the API such that some methods are not accessible via unauthenticated users. Access control mapping is listed below.
 
 
-###EndPoint                    Public Access
+###EndPoint        &&            Public Access
 * POST /auth/login,              TRUE
 
 * GET /auth/logout,              FALSE
