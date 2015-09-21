@@ -66,21 +66,21 @@ For this task, you are required to implement Token Based Authentication for the 
 
 ###EndPoint                    Public Access
 * POST /auth/login,              TRUE
-* 
+
 * GET /auth/logout,              FALSE
-* 
+
 * POST /bucketlists/,            FALSE
-* 
+
 * GET /bucketlists/,             TRUE
-* 
+
 * GET /bucketlist/<id>,          FALSE
-* 
+
 * POST /bucketlist/<id>,         FALSE
-* 
+
 * PUT /bucketlist/<id>,          FALSE
-* 
+
 * DELETE /bucketlist/<id>,       FALSE
-* 
+
 
 
 Note: GET /bucketlists/ should return an array of bucketlist containing name and id only.
