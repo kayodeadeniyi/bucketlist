@@ -6,7 +6,49 @@ class Api::V1::BucketlistsControllerTest < ActionController::TestCase
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
     end
 
-  test "the index action returns back json of all bucketlists" do
+  test "the index action returns back json of all bucketlists with a token" do
+
+    cent = Bucketlist.create(name: "Century", user_id: 2)
+    kay = Bucketlist.create(name: "Kayode", user_id: 2)
+    fattie = Bucketlist.create(name: "Fattie", user_id: 2)
+
+    get :index
+    bucketlists = JSON.parse(response.body)
+
+    assert_equal 3, bucketlists["bucketlists"].count
+    assert_equal cent.id, bucketlists["bucketlists"][0]['id']
+    assert_equal cent.name, bucketlists["bucketlists"][0]['name']
+    assert_equal kay.id, bucketlists["bucketlists"][1]['id']
+    assert_equal kay.name, bucketlists["bucketlists"][1]['name']
+    assert_equal fattie.id, bucketlists["bucketlists"][2]['id']
+    assert_equal fattie.name, bucketlists["bucketlists"][2]['name']
+  end
+
+  test "index action returns back json of all bucketlists without a token" do
+    @user1 = User.create(name: "kay", email: "kay@yahoo.com", password: "kayode", login: true)
+    @user1.auth_token = ""
+    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+
+    cent = Bucketlist.create(name: "Century", user_id: 2)
+    kay = Bucketlist.create(name: "Kayode", user_id: 2)
+    fattie = Bucketlist.create(name: "Fattie", user_id: 2)
+
+    get :index
+    bucketlists = JSON.parse(response.body)
+
+    assert_equal 3, bucketlists["bucketlists"].count
+    assert_equal cent.id, bucketlists["bucketlists"][0]['id']
+    assert_equal cent.name, bucketlists["bucketlists"][0]['name']
+    assert_equal kay.id, bucketlists["bucketlists"][1]['id']
+    assert_equal kay.name, bucketlists["bucketlists"][1]['name']
+    assert_equal fattie.id, bucketlists["bucketlists"][2]['id']
+    assert_equal fattie.name, bucketlists["bucketlists"][2]['name']
+  end
+
+  test "index action returns back json of all bucketlists without login" do
+    @user1 = User.create(name: "kay", email: "kay@yahoo.com", password: "kayode", login: false)
+    @user1.auth_token = ""
+    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
 
     cent = Bucketlist.create(name: "Century", user_id: 2)
     kay = Bucketlist.create(name: "Kayode", user_id: 2)
@@ -81,7 +123,7 @@ class Api::V1::BucketlistsControllerTest < ActionController::TestCase
   test "cannot perform any operation asides index with an expired token" do
     @user2 = User.create(name: "kay1", email: "kay@yahoo.com1", password: "kayode", login: false)
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user2.auth_token)
-    bucketlist = Bucketlist.create(name: "Nkem", user_id: @user.id)
+    bucketlist = Bucketlist.create(name: "Nkem", user_id: @user2.id)
     create_params = { name: "Iyke" }
 
     get :index
@@ -113,7 +155,7 @@ class Api::V1::BucketlistsControllerTest < ActionController::TestCase
     @user2 = User.create(name: "kay1", email: "kay@yahoo.com1", password: "kayode", login: false)
     @user2.auth_token = ""
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user2.auth_token)
-    bucketlist = Bucketlist.create(name: "Nkem", user_id: @user.id)
+    bucketlist = Bucketlist.create(name: "Nkem", user_id: @user2.id)
     create_params = { name: "Iyke" }
 
     get :index
@@ -139,6 +181,37 @@ class Api::V1::BucketlistsControllerTest < ActionController::TestCase
     get :destroy, { id: bucketlist.id }
     assert_equal 401, response.status
     assert_equal "Bad Credentials", response.body
+
+  end
+  test "cannot perform any CRUD operation outside user's account" do
+    @user1 = User.create(name: "kay1", email: "kay@yahoo.com1", password: "kayode", login: true)
+    bucketlist = Bucketlist.create(name: "Nkem", user_id: @user1.id)
+    @user2 = User.create(name: "kay2", email: "kay@yahoo.com2", password: "kayode", login: true)
+    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user2.auth_token)
+
+    get :show, { id: bucketlist.id }
+    resp = JSON.parse(response.body)
+    assert_equal 200, response.status
+    assert_equal "failure", resp['status']
+    assert_equal "You can only see bucketlists that you created", resp['body']
+
+    get :update, { id: bucketlist.id, name: "Kayode" }
+    resp = JSON.parse(response.body)
+    assert_equal 200, response.status
+    assert_equal "failure", resp['status']
+    assert_equal "You can only update bucketlists that you created", resp['body']
+
+    get :add_item, { id: bucketlist.id, name: "hello", done: true }
+    resp = JSON.parse(response.body)
+    assert_equal 200, response.status
+    assert_equal "failure", resp['status']
+    assert_equal "You can only add items to bucketlists that you created", resp['body']
+
+    get :destroy, { id: bucketlist.id }
+    resp = JSON.parse(response.body)
+    assert_equal 200, response.status
+    assert_equal "failure", resp['status']
+    assert_equal "You can only destroy bucketlists that you created", resp['body']
 
   end
 

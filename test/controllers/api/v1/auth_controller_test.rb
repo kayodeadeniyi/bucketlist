@@ -27,6 +27,19 @@ class Api::V1::AuthControllerTest < ActionController::TestCase
     assert_equal @user.email, login_response["user"]["email"]
   end
 
+  test "login cannot log users in without password" do
+    @user = User.create(name: "kay", email: "kay@yahoo.com", password: "kayode", login: true)
+
+    login_params = { email: @user.email, password: "" }
+
+    get :login, login_params
+    login_response = JSON.parse(response.body)
+
+    assert_equal 200, response.status
+    assert_equal "failure", login_response['status']
+    assert_equal "Invalid login credential", login_response['body']
+  end
+
   test "logout can log users out" do
     @user = User.create(name: "kay", email: "kay@yahoo.com", password: "kayode", login: true)
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
