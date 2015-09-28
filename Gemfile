@@ -17,6 +17,7 @@ group :development, :test do
   gem 'sqlite3'
   gem 'pry'
   gem 'factory_girl'
+
   # gem 'capybara-webkit'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -26,6 +27,7 @@ group :development, :test do
 
   #This gem is used to check for test Coverage (coveralls.io)
   gem 'coveralls', require: false
+  gem 'simplecov', :require => false
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

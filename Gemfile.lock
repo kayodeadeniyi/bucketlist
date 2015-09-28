@@ -167,6 +167,7 @@ DEPENDENCIES
   rails-api
   rails_12factor (= 0.0.2)
   rename
+  simplecov
   spring
   sqlite3
   web-console (~> 2.0)

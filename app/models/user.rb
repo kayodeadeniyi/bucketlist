@@ -7,11 +7,15 @@ class User < ActiveRecord::Base
   before_create :set_auth_token
   has_secure_password
   has_many :bucketlists, dependent: :destroy
+  has_many :items, through: :bucketlists
 
   private
     def set_auth_token
       return if auth_token.present?
       self.auth_token = generate_auth_token
+      # begin
+      #   self.token = SecureRandom.hex.to_s
+      # end while self.class.exists?(token: token)
     end
 
     def generate_auth_token

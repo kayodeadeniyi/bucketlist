@@ -53,11 +53,10 @@ class ApplicationController < ActionController::API
     end
 
     def authenticate_token
-      # require 'pry'; binding.pry
       authenticate_with_http_token do |token, options|
         @current_user = User.find_by(auth_token: token)
       end
-      if !@current_user.nil?
+      unless @current_user.nil?
         if @current_user.login == false
           self.headers['WWW-Authenticate'] = 'Token realm="Application"'
           render json: 'Token Expired', status: 401

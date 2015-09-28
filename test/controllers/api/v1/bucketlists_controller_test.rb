@@ -1,10 +1,10 @@
 require 'test_helper'
 
 class Api::V1::BucketlistsControllerTest < ActionController::TestCase
-  def setup
-    @user = User.create(name: "kay", email: "kay@yahoo.com", password: "kayode", login: true)
-    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
-  end
+    def setup
+      @user = User.create(name: "kay", email: "kay@yahoo.com", password: "kayode", login: true)
+      request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+    end
 
   test "the index action returns back json of all bucketlists" do
 
@@ -76,6 +76,70 @@ class Api::V1::BucketlistsControllerTest < ActionController::TestCase
     assert_equal 1, bucketlist.items.count
     assert_equal "hello", bucketlist_item["item"]["name"]
     assert_equal true, bucketlist_item["item"]["done"]
+  end
+
+  test "cannot perform any operation asides index with an expired token" do
+    @user2 = User.create(name: "kay1", email: "kay@yahoo.com1", password: "kayode", login: false)
+    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user2.auth_token)
+    bucketlist = Bucketlist.create(name: "Nkem", user_id: @user.id)
+    create_params = { name: "Iyke" }
+
+    get :index
+    assert_equal 200, response.status
+    refute_equal "Token Expired", response.body
+
+    post :create, create_params
+    assert_equal 401, response.status
+    assert_equal "Token Expired", response.body
+
+    get :show, { id: bucketlist.id }
+    assert_equal 401, response.status
+    assert_equal "Token Expired", response.body
+
+    get :update, { id: bucketlist.id, name: "Kayode" }
+    assert_equal 401, response.status
+    assert_equal "Token Expired", response.body
+
+    get :add_item, { id: bucketlist.id, name: "hello", done: true }
+    assert_equal 401, response.status
+    assert_equal "Token Expired", response.body
+
+    get :destroy, { id: bucketlist.id }
+    assert_equal 401, response.status
+    assert_equal "Token Expired", response.body
+
+  end
+  test "cannot perform any operation asides index without a token" do
+    @user2 = User.create(name: "kay1", email: "kay@yahoo.com1", password: "kayode", login: false)
+    @user2.auth_token = ""
+    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user2.auth_token)
+    bucketlist = Bucketlist.create(name: "Nkem", user_id: @user.id)
+    create_params = { name: "Iyke" }
+
+    get :index
+    assert_equal 200, response.status
+    refute_equal "Bad Credentials", response.body
+
+    post :create, create_params
+    assert_equal 401, response.status
+    assert_equal "Bad Credentials", response.body
+
+    get :show, { id: bucketlist.id }
+    assert_equal 401, response.status
+    assert_equal "Bad Credentials", response.body
+
+    get :update, { id: bucketlist.id, name: "Kayode" }
+    assert_equal 401, response.status
+    assert_equal "Bad Credentials", response.body
+
+    get :add_item, { id: bucketlist.id, name: "hello", done: true }
+    assert_equal 401, response.status
+    assert_equal "Bad Credentials", response.body
+
+    get :destroy, { id: bucketlist.id }
+    assert_equal 401, response.status
+    assert_equal "Bad Credentials", response.body
+
   end
 
 end

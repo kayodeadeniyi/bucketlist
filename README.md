@@ -62,3 +62,5 @@ DELETE /bucketlist/<id>       FALSE
 Note: GET /bucketlists/ should return an array of bucketlist containing name and id only.
 
 Task 2 - Version your API
+
+[![Coverage Status](https://coveralls.io/repos/andela-kadeniyi/bucketlist/badge.svg?branch=master&service=github)](https://coveralls.io/github/andela-kadeniyi/bucketlist?branch=master)
