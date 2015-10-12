@@ -89,3 +89,7 @@ For this task, you are required to implement Token Based Authentication for the 
 [![Coverage Status](https://coveralls.io/repos/andela-kadeniyi/bucketlist/badge.svg?branch=master&service=github)](https://coveralls.io/github/andela-kadeniyi/bucketlist?branch=master)
 
 To read the documentation and interact with the API, <a href="http://abucketlist.herokuapp.com/">Click here</a>
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/andela-kadeniyi/bucketlist/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
